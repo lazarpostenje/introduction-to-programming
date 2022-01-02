@@ -10,7 +10,7 @@ These are some of my solved tasks which I've done whilst preparing for UUP final
 - scanf
 - getchar
 - putchar
-- puts (samo na drugom kolokvijumu i ispitu) (Only on the second colloquium and final exam)
+- puts (Only on the second colloquium and final exam)
 - fopen
 - fclose
 - feof
