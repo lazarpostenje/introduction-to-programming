@@ -1,71 +1,113 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <limits.h>
-
-/**
-acdj"knaan"nhn"prcf"ak"dfffs"j
-Unos: acdj "knaan" nhn "prcf" ak "dfffs" j
-Ispis: acdj"naan"nhn""ak"fff"j
-**/
-
+#include <string.h>
 #define SIZE 500
 
-int main () {
+/**
 
-    char string[SIZE];
-    fgets(string, SIZE, stdin);
-    string[strlen(string)-1] = '\0';
-    int duzina = strlen(string);
-    char pomocnik[SIZE];
-    int k = 0, flag = 0;
+        2. (12p) Napisati program koji učitava string koji sadrži mala slova i pravilno
+        zatvorene dvostruke navodnike. Program treba da na osnovu učitanog stringa
+        napravi novi koji iz navodnika izbacuje sva slova koja se pojavljuju samo jednom
+        između navodnika.
+        Primer
+        Unos: acdj"knaan"nhn"prcf"ak"dfffs"j
+        Ispis: acdj"naan"nhn""ak"fff"j
+**/
 
-    for(int i = 0; i < duzina; i++){
-            if (string[i] == '"') {
-                if (flag == 0) {
-                pomocnik[k++] = ' ';
-                pomocnik[k++] = '"';
-                flag = 1;
-                }
-                else {
-                    pomocnik[k++] = '"';
-                    pomocnik[k++] = ' ';
-                    flag = 0;
-                }
-            }
-            else pomocnik[k++] = string[i];
-    }
-    pomocnik[k] = '\0';
 
-    char prenosnik[SIZE] = "", kontejner[SIZE] = "";
-    char* token = strtok(pomocnik, " ");
-    int brojac = 0, c = 0;
+int main(){
 
-    while (token != NULL) {
+    char mojString[SIZE];
 
-        if (token[0] == '"' && token[strlen(token)-1] == '"') {
+    fgets(mojString, SIZE, stdin);
 
-            for (int i = 0; i < strlen(token); i++) {
-                brojac = 0;
-                for (int j = 0; j < strlen(token); j++)
-                        if (token[i] == token[j]) brojac++;
+    mojString[strlen(mojString) - 1] = '\0';
 
-                if (brojac > 1) {
-                    kontejner[c++] = token[i];
-                    kontejner[c] = '\0';
-                }
-                }
-            }
+    char noviString[SIZE];
 
-        else {
-            strcat(prenosnik, token);
+    int indexer = 0;
+
+    int navodnici = 0;
+
+    for(int i = 0; i < strlen(mojString); i++){
+
+        if(mojString[i] == '"' && navodnici == 0){
+
+            navodnici = 1;
+            noviString[indexer++] = ' ';
+            noviString[indexer++] = mojString[i];
+            noviString[indexer] = '\0';
+
+
+        }else if(mojString[i] == '"' && navodnici == 1) {
+
+            navodnici = 0;
+            noviString[indexer++] = mojString[i];
+            noviString[indexer++] = ' ';
+            noviString[indexer] = '\0';
+        } else {
+
+            noviString[indexer++] = mojString[i];
+            noviString[indexer] = '\0';
+
         }
-        strcat(prenosnik, kontejner);
-        kontejner[0] = '\0';
-        c = 0;
-        token = strtok(NULL, " ");
+
     }
-    strcpy(string, prenosnik);
-    puts(string);
-    return 0;
+
+    char *token = strtok(noviString, " ");
+
+    char output[SIZE] = "";
+
+    char pomocnik[SIZE];
+
+    while(token != NULL){
+
+        pomocnik[0] = '\0';
+
+        int indexer = 0;
+
+        if(token[0] == '"' && token[strlen(token) - 1] == '"'){
+
+            for(int i = 0; i < strlen(token); i++){
+
+                char *pok = token;
+                int brojac = 0;
+
+                while((pok = strchr(pok, token[i])) != NULL){
+
+                    pok++;
+                    brojac++;
+
+                }
+
+                if(brojac > 1) {
+
+                    pomocnik[indexer++] = token[i];
+                    pomocnik[indexer] = '\0';
+
+                }
+
+            }
+
+        } else {
+
+            for(int i = 0; i < strlen(token); i++){
+
+                pomocnik[indexer++] = token[i];
+                pomocnik[indexer] = '\0';
+
+            }
+
+        }
+
+        strcat(output, pomocnik);
+
+        token = strtok(NULL, " ");
+
+    }
+
+    puts(output);
+
+    return 0;/// acdj"knaan"nhn"prcf"ak"dfffs"j
+
 }
